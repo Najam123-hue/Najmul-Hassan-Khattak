@@ -1,0 +1,26 @@
+section .data
+    num1 db 5
+    num2 db 5
+    msg db 'Numbers are equal',0xA
+    len equ $-msg
+
+section .text
+    global _start
+
+_start:
+    mov al, [num1]
+    cmp al, [num2]
+    je equal
+    jmp exit
+
+equal:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, msg
+    mov edx, len
+    int 0x80
+
+exit:
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
