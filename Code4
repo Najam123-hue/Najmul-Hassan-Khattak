@@ -1,0 +1,14 @@
+section .data
+    combo db '6H'
+    len equ $-combo
+
+section .text
+    global _start
+
+_start:
+    mov al, [combo]
+    mov bl, [combo+1]
+
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
