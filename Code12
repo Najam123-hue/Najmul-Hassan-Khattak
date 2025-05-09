@@ -1,0 +1,36 @@
+section .data
+    num1 db 0xFF
+    num2 db 0x01
+    carry_msg db 'Carry occurred',0xA
+    carry_len equ $-carry_msg
+    no_carry_msg db 'No carry',0xA
+    no_carry_len equ $-no_carry_msg
+
+section .text
+    global _start
+
+_start:
+    mov al, [num1]
+    add al, [num2]
+    jc carry
+    jnc no_carry
+
+carry:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, carry_msg
+    mov edx, carry_len
+    int 0x80
+    jmp exit
+
+no_carry:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, no_carry_msg
+    mov edx, no_carry_len
+    int 0x80
+
+exit:
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
