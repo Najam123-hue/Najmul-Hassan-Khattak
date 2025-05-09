@@ -1,0 +1,14 @@
+section .data
+    char db 'a'
+
+section .text
+    global _start
+
+_start:
+    mov al, [char]
+    sub al, 32
+    mov [char], al
+
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
