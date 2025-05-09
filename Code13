@@ -1,0 +1,36 @@
+section .data
+    num1 db 10
+    num2 db 10
+    zero_msg db 'Result is zero',0xA
+    zero_len equ $-zero_msg
+    not_zero_msg db 'Result not zero',0xA
+    not_zero_len equ $-not_zero_msg
+
+section .text
+    global _start
+
+_start:
+    mov al, [num1]
+    sub al, [num2]
+    jz zero
+    jnz not_zero
+
+zero:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, zero_msg
+    mov edx, zero_len
+    int 0x80
+    jmp exit
+
+not_zero:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, not_zero_msg
+    mov edx, not_zero_len
+    int 0x80
+
+exit:
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
