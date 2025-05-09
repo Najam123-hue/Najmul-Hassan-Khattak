@@ -1,0 +1,36 @@
+section .data
+    carry_msg db 'Carry set',0xA
+    carry_len equ $-carry_msg
+    no_carry_msg db 'Carry not set',0xA
+    no_carry_len equ $-no_carry_msg
+
+section .text
+    global _start
+
+_start:
+    stc
+    jc carry_set
+    jmp no_carry
+
+carry_set:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, carry_msg
+    mov edx, carry_len
+    int 0x80
+
+    clc
+    jnc carry_cleared
+    jmp exit
+
+carry_cleared:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, no_carry_msg
+    mov edx, no_carry_len
+    int 0x80
+
+exit:
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
