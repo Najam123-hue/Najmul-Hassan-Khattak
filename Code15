@@ -1,0 +1,36 @@
+section .data
+    num1 dw 30000
+    num2 dw 2
+    overflow_msg db 'Overflow occurred',0xA
+    overflow_len equ $-overflow_msg
+    no_overflow_msg db 'No overflow',0xA
+    no_overflow_len equ $-no_overflow_msg
+
+section .text
+    global _start
+
+_start:
+    mov ax, [num1]
+    imul word [num2]
+    jo overflow
+    jno no_overflow
+
+overflow:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, overflow_msg
+    mov edx, overflow_len
+    int 0x80
+    jmp exit
+
+no_overflow:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, no_overflow_msg
+    mov edx, no_overflow_len
+    int 0x80
+
+exit:
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
