@@ -1,0 +1,37 @@
+section .data
+    num1 db -5
+    num2 db 3
+    greater_msg db 'Num1 > Num2',0xA
+    greater_len equ $-greater_msg
+    less_msg db 'Num1 < Num2',0xA
+    less_len equ $-less_msg
+
+section .text
+    global _start
+
+_start:
+    mov al, [num1]
+    cmp al, [num2]
+    jg greater
+    jl less
+    jmp exit
+
+greater:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, greater_msg
+    mov edx, greater_len
+    int 0x80
+    jmp exit
+
+less:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, less_msg
+    mov edx, less_len
+    int 0x80
+
+exit:
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
