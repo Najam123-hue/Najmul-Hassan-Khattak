@@ -1,0 +1,19 @@
+section .data
+    mstr db '19H',0
+    len equ $-mstr
+
+section .text
+    global _start
+
+_start:
+    mov ecx, len
+    mov esi, mstr
+
+display:
+    mov al, [esi]
+    inc esi
+    loop display
+
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
