@@ -1,0 +1,26 @@
+section .data
+    word db 'LaHoRe',0
+    len equ $-word
+
+section .text
+    global _start
+
+_start:
+    mov ecx, len
+    mov esi, word
+
+process:
+    mov al, [esi]
+    cmp al, 'A'
+    jb next
+    cmp al, 'Z'
+    ja next
+    add al, 32
+    mov [esi], al
+next:
+    inc esi
+    loop process
+
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
