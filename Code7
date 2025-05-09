@@ -1,0 +1,72 @@
+section .data
+    prompt db 'Enter three different numbers:',0
+    num1 db 0
+    num2 db 0
+    num3 db 0
+
+section .text
+    global _start
+
+_start:
+    mov eax, 3
+    mov ebx, 0
+    mov ecx, num1
+    mov edx, 1
+    int 0x80
+
+    mov eax, 3
+    mov ebx, 0
+    mov ecx, num2
+    mov edx, 1
+    int 0x80
+
+    mov eax, 3
+    mov ebx, 0
+    mov ecx, num3
+    mov edx, 1
+    int 0x80
+
+    mov al, [num1]
+    mov bl, [num2]
+    mov cl, [num3]
+
+    cmp al, bl
+    je exit
+    cmp al, cl
+    je exit
+    cmp bl, cl
+    je exit
+
+    cmp al, bl
+    jg check_al_cl
+    cmp bl, cl
+    jg print_bl
+    jmp print_cl
+
+check_al_cl:
+    cmp al, cl
+    jg print_al
+    jmp print_cl
+
+print_al:
+    mov [num1], al
+    jmp display
+
+print_bl:
+    mov [num1], bl
+    jmp display
+
+print_cl:
+    mov [num1], cl
+
+display:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, num1
+    mov edx, 1
+    int 0x80
+
+exit:
+    mov eax, 1
+    mov ebx, 0
+    int 0x80
